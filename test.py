@@ -14,26 +14,10 @@ from tensorflow import keras
 from tensorflow.keras.layers import *
 from tensorflow.keras.optimizers import Adam, SGD
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras import callbacks
 
 # For data preprocess
 from datetime import date, datetime
-import numpy as np
-import csv
-import os
-
 import pandas as pd
-
-# For plotting
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-
-import matplotlib.pyplot as plt
-from mlxtend.plotting import scatterplotmatrix
-
-# %matplotlib inline
-from tensorflow.keras import callbacks
 
 root_dir = "/usr/src/dataset/ntut-ml-regression-2021"
 train_dir = root_dir + "/train-v3.csv"
@@ -131,45 +115,13 @@ x_train = (x_train-mean) / std
 x_valid = (x_valid-mean) / std
 x_test = (x_test-mean) / std
 
-"""## Training model"""
+"""## Predict"""
 
-init_weight = keras.initializers.RandomNormal(mean=0.0, stddev=0.05, seed=57)
+model = keras.models.load_model('model.h5')
+predict_price = model.predict(x_test)
+predict_price
 
-model = Sequential()
-model.add(Dense(64, input_dim=input_dim, kernel_initializer=init_weight, activation='relu'))
-# model.add(Dense(64, kernel_initializer=init_weight, activation='relu'))
-model.add(Dense(64, kernel_initializer=init_weight, activation='relu'))
-model.add(Dense(64, kernel_initializer=init_weight, activation='relu'))
-# model.add(Dense(64, activation='relu'))
-model.add(Dense(64, kernel_initializer=init_weight, activation='relu'))
-model.add(Dense(32, kernel_initializer=init_weight, activation='relu'))
-model.add(Dense(32, kernel_initializer=init_weight, activation='relu'))
-model.add(Dense(1))
-
-opt = Adam(learning_rate=0.02)
-# opt = SGD( decay=1e-8, momentum=0.9)
-model.compile(loss='MAE', optimizer=opt)
-model.summary()
-
-es = callbacks.EarlyStopping(patience=50, monitor='val_loss', mode='auto')
-check_point = callbacks.ModelCheckpoint(
-    'model.h5',
-    monitor='val_loss',
-    verbose=3,
-    save_best_only=True,
-    save_weight_only=True,
-    mode='auto',
-    period=1
-)
-my_callbacks = [es, check_point]
-
-batch_size = 32
-epochs = 1000
-model.fit(
-    x_train, y_train,
-    batch_size=batch_size,
-    epochs=epochs,
-    verbose=1,
-    validation_data=(x_valid, y_valid),
-    callbacks=my_callbacks
-)
+with open(f"predict_result_{datetime.now()}.csv", "w") as f:
+    f.write('id,price\n')
+    for i in range(len(predict_price)):
+        f.write(f"{i+1},{float(predict_price[i])}\n")
