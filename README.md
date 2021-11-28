@@ -1,17 +1,26 @@
 # Machine Learning@NTUT-2021-Autumn-Regression
 
-此專案為北科大機器學習的作業: 房價預測 [kaggle 比賽連結](https://www.kaggle.com/c/machine-learningntut-2021-autumn-regression)
+> 因使用學校帳號重新申請 Github 帳號遭到停用 (已寫信申訴中)，暫時先用此帳號上傳。
+
+Kaggle Team display name: `110368014 陳彥霖`
+![](/images/kaggle_submit.png)
+
+此專案為北科大機器學習的作業: 房價預測
+
+[kaggle Machine Learning@NTUT-2021-Autumn-Regression
+House Sale Price Prediction Challenge](https://www.kaggle.com/c/machine-learningntut-2021-autumn-regression)
 
 # 環境設定
 
 ## Docker
 
-為了建立獨立的開發環境，本專案需安裝 docker
+為了建立獨立的開發環境，運行本專案腳本需安裝 Docker
 
 ## kaggle API key
 
-本次作業的 dataset 須透過 kaggle 套件下載，需登入 kaggle 設定頁面下載自己的 API key 檔案，並將下載的`kaggle.json`複製至本專案根目錄
+本次作業的 dataset 須透過 kaggle 套件下載，需登入 kaggle 設定頁面下載自己的 API key 檔案
 ![](images/kaggle_api_key.png)
+並將下載的`kaggle.json`複製至本專案根目錄
 
 ## Build Docker Image
 
@@ -180,7 +189,7 @@ _________________________________________________________________
 
 ## 設定 callback
 
-1. Early Stop: 當`val_loss`沒有進步(數值下降)超過 50 epochs，就自動停止訓練
+1. Early Stop: 當`val_loss`超過 50 epochs 沒有進步(數值下降)，就自動停止訓練
 2. Check Point: 每一 epoch 紀錄`val_loss`數值，當`val_loss`超過最佳紀錄時，儲存權重資料至 `model.h5`
 
 ```python
@@ -205,3 +214,23 @@ my_callbacks = [es, check_point]
 
 本次作業繳交成績
 ![](/images/kaggle_submit.png)
+
+# 心得
+
+本次作業之前就有接觸過許多 Machine Learning/Deep Learning 等相關課程，但這回學習到了更多訓練模型時的技巧、更加熟悉相關工具的使用。
+
+## 資料預處理的重要性
+
+不是所有在 dataset 提供的資料都是適合的訓練資料，善用 python `pandas` 套件分析每一個欄位與預估目標的相關性，並找出不合理、可能會嚴重影響訓練結果的資料加以處理或排除。
+
+## Tensorflow Callbacks
+
+以前雖然知道訓練模型時會有 under/over fitting 的狀況，但不了解如何在適當的時機停止訓練，只能透過不斷的嘗試(碰運氣)不同的 epoch 數量。
+
+本次加入了`Early Stop`及`Check Point`兩個 callback，設定指定的條件停止模型訓練，並隨時儲存最佳的模型，讓模型的訓練更加的自動且有效率。
+
+## 熟練 Docker 操作
+
+先前已經有 Docker 的基本觀念，這次作業也有需要獨立開發環境、將訓練/測試整理成腳板的需求。
+
+花了點時間將訓練的環境、測試資料及訓練/測試腳本整理成 Docker Image，讓第一次了解本專案的人也能輕鬆地搭建相同的運行環境。
