@@ -3,6 +3,7 @@
 > 因使用學校帳號重新申請 Github 帳號遭到停用 (已寫信申訴中)，暫時先用此帳號上傳。
 
 Kaggle Team display name: `110368014 陳彥霖`
+
 ![](/images/kaggle_submit.png)
 
 此專案為北科大機器學習的作業: 房價預測
@@ -19,7 +20,9 @@ House Sale Price Prediction Challenge](https://www.kaggle.com/c/machine-learning
 ## kaggle API key
 
 本次作業的 dataset 須透過 kaggle 套件下載，需登入 kaggle 設定頁面下載自己的 API key 檔案
+
 ![](images/kaggle_api_key.png)
+
 並將下載的`kaggle.json`複製至本專案根目錄
 
 ## Build Docker Image
